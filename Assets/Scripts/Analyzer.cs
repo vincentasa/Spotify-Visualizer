@@ -1,30 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Analyzer : MonoBehaviour
 {
     AudioSource source;
+    float[] frame;
+    public GameObject cube;
     public static UnityEvent<float> onVolumeChanged = new();
 
-    void Start()
+    private void Start()
     {
         source = GetComponent<AudioSource>();
-        Application.targetFrameRate = 60;
-    }
 
+    }
     void Update()
     {
-        var samples = new float[735];
-        source.clip.GetData(samples, source.timeSamples);
+        frame = new float[735];
+        source.clip.GetData(frame, source.timeSamples);
 
-        var sum = 0f;
-        for (int i = 0; i < samples.Length; i++)
+        float sum = 0f;
+        foreach (var sample in frame)
         {
-            sum += Mathf.Abs(samples[i]);
+            sum += Mathf.Abs(sample);
         }
 
-        var average = sum / samples.Length;
+        float averageVolume = sum / frame.Length;
 
-        onVolumeChanged.Invoke(average);
+        onVolumeChanged.Invoke(averageVolume);
     }
 }
