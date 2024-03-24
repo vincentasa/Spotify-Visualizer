@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class Dancer : MonoBehaviour
 {
-    [Range(0, 5)] public float rotateSpeed;
-    public ParticleSystem boom;
+    public float sensitivity = 1;
+    public float maxSize = 10;
 
-
-
-    private void Start()
+    void Start()
     {
-        
+	    Analyzer.onVolumeChanged.AddListener(Dance);
     }
+
     public void Dance(float volume)
     {
-        transform.localScale = new Vector3(volume * 3f, volume * 3f, volume * 3f);
-        if (volume >= 0.1f)
-        {
-            boom.Play();
-        }
+	    volume -= 0.15f;
+	    if (volume < 0f) volume = 0f;
+
+	    transform.localScale = Vector3.one * (0.5f + Mathf.Pow(volume,sensitivity) * maxSize);
+
     }
 }
