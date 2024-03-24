@@ -1,36 +1,35 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CircleDancer : MonoBehaviour
 {
-	public float radius = 5;
-	public int count = 10;
-	public float rotateSpeed = 100;
-	public float minScale = 0.2f;
-	public float sensitivity = 1f;
-	public float boost = 1;
-	public GameObject prefab;
+    public GameObject prefab;
+    [Range(1, 50)] public int count = 10;
+    [Range(1f, 15f)] public float radius = 5;
+    [Range(-100, 100)] public float rotateSpeed = 100;
+    [Range(0f, 10f)] public float sensitivity = 1;
+    [Range(0f, 5f)]public float boost = 1;
+    [Range(0, 1)] public float minScale = 0.2f;
 
-	void Start()
-	{
-		for (float i = 0; i < count; i++)
-		{
-			var angle = i / count * Mathf.PI * 2f;
-			var pos = new Vector3();
-			pos.x = Mathf.Cos(angle);
-			pos.y = Mathf.Sin(angle);
-			pos *= radius;
-			var obj = Instantiate(prefab, pos, Quaternion.identity,transform);
-			obj.transform.LookAt(transform);
-		}
+    private void Start()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            var angle = (float)i / count * Mathf.PI * 2f;
+            var pos = new Vector3();
+            pos.x = Mathf.Cos(angle);
+            pos.y = Mathf.Sin(angle);
+            pos *= radius;
+            Instantiate(prefab, pos, Quaternion.identity, transform);
+        }
 
-		Analyzer.onVolumeChanged.AddListener(Dance);
-	}
-
-
-	public void Dance(float volume)
-	{
-		volume *= boost;
-		transform.Rotate(0,0,Mathf.Pow(volume,sensitivity) * rotateSpeed * Time.deltaTime);
-		transform.localScale = Vector3.one * (minScale + volume);
-	}
+        Analyzer.onVolumeChanged.AddListener(Dance);
+    }
+    void Dance(float volume)
+    {
+        transform.Rotate(0, 0, Mathf.Pow(volume * boost, sensitivity) * rotateSpeed);
+        transform.localScale = Vector3.one * (volume + minScale);
+    }
 }

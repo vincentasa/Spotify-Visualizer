@@ -5,26 +5,29 @@ using UnityEngine.Events;
 
 public class Analyzer : MonoBehaviour
 {
-	AudioSource source;
-	public static UnityEvent<float> onVolumeChanged = new();
+    AudioSource source;
+    float[] frame;
+    public GameObject cube;
+    public static UnityEvent<float> onVolumeChanged = new();
 
-	void Start()
-	{
-		source = GetComponent<AudioSource>();
-	}
+    private void Start()
+    {
+        source = GetComponent<AudioSource>();
+        
+    }
+    void Update()
+    {
+        frame = new float[735];
+        source.clip.GetData(frame, source.timeSamples);
 
-	void Update()
-	{
-		var samples = new float[735];
-		source.clip.GetData(samples, source.timeSamples);
+        float sum = 0f;
+        foreach (var sample in frame)
+        {
+            sum += Mathf.Abs(sample);
+        }
 
-		var sum = 0f;
-		foreach (var sample in samples)
-		{
-			sum += Mathf.Abs(sample);
-		}
-		var average = sum / samples.Length;
+        float averageVolume = sum / frame.Length;
 
-		onVolumeChanged.Invoke(average);
-	}
+        onVolumeChanged.Invoke(averageVolume);
+    }
 }
