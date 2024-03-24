@@ -6,12 +6,12 @@ using UnityEngine.Events;
 public class CircleDancer : MonoBehaviour
 {
     public GameObject prefab;
-    [Range(1, 50)] public int count = 10;
-    [Range(1f, 15f)] public float radius = 5;
-    [Range(-100, 100)] public float rotateSpeed = 100;
-    [Range(0f, 10f)] public float sensitivity = 1;
-    [Range(0f, 5f)]public float boost = 1;
-    [Range(0, 1)] public float minScale = 0.2f;
+    public int count = 10;
+    public float radius = 5;
+    public float rotateSpeed = 100;
+    public float sensitivity = 1;
+    public float boost = 1;
+    public float minScale = 0.2f;
 
     private void Start()
     {
