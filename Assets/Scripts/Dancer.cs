@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dancer : MonoBehaviour
+public class Dancer :MonoBehaviour
 {
     public float rotateSpeed;
     public ParticleSystem boom;
