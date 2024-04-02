@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CircleDancer : MonoBehaviour
+public class CircleDancer :MonoBehaviour
 {
     public GameObject prefab;
     public int count = 10;
